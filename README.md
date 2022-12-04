@@ -1,0 +1,1 @@
+# RSO project: Store items list managing microservice
