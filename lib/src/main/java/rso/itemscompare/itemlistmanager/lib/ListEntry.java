@@ -12,11 +12,11 @@ public class ListEntry {
         this.listId = listId;
     }
 
-    public  Integer getitemId() {
+    public  Integer getItemId() {
         return itemId;
     }
 
-    public void setitemId(Integer itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 }

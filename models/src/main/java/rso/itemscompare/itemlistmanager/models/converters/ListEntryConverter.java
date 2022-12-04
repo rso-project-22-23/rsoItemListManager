@@ -8,7 +8,7 @@ public class ListEntryConverter {
 
         ListEntry dto = new ListEntry();
         dto.setListId(entity.getListId());
-        dto.setitemId(entity.getItemId());
+        dto.setItemId(entity.getItemId());
 
         return dto;
 
@@ -17,7 +17,7 @@ public class ListEntryConverter {
     public static ListEntryEntity toEntity(ListEntry dto) {
         ListEntryEntity entity = new ListEntryEntity();
         entity.setListId(dto.getListId());
-        entity.setItemId(dto.getitemId());
+        entity.setItemId(dto.getItemId());
 
         return entity;
 
