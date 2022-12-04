@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: item-list-manager-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: item-list-manager
+  template:
+    metadata:
+      labels:
+        app: item-list-manager
+    spec:
+      containers:
+        - image: ngregor/item-list-manager:2022-12-04-22-10-40
+          name: item-list-manager
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://tai.db.elephantsql.com:5432/ahaxgbhc
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: ahaxgbhc
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-pass
+                  key: KUMULUZEE_DATASOURCES0_PASSWORD
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: item-list-manager
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: item-list-manager
