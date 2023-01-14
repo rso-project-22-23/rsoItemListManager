@@ -6,7 +6,11 @@ import javax.persistence.*;
 @Table(name = "item_list")
 @NamedQueries(value = {
         @NamedQuery(name = "ItemListEntity.getAll",
-                query = "SELECT il FROM ItemListEntity il")
+                query = "SELECT ile FROM ItemListEntity ile"),
+        @NamedQuery(name = "ItemListEntity.getAllForUser",
+                query = "SELECT ile FROM ItemListEntity ile WHERE ile.userId = :userId"),
+        @NamedQuery(name = "ItemListEntity.getByNameForUser",
+                query = "SELECT ile FROM ItemListEntity ile WHERE ile.userId = :userId AND ile.listName = :listName"),
 })
 public class ItemListEntity {
     @Id

@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 
 @RequestScoped
 public class ListEntryBean {
-    private Logger log = Logger.getLogger(ListEntryBean.class.getName());
-
     @Inject
     private EntityManager em;
 

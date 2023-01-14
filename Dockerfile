@@ -8,6 +8,4 @@ ADD ./api/target/item-list-manager-api-1.0.0-SNAPSHOT.jar /app
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "item-list-manager-1.0.0-SNAPSHOT.jar"]
-#ENTRYPOINT ["java", "-jar", "item-list-manager-1.0.0-SNAPSHOT.jar"]
-#CMD java -jar item-list-manager-1.0.0-SNAPSHOT.jar
+CMD ["java", "-jar", "item-list-manager-api-1.0.0-SNAPSHOT.jar"]
