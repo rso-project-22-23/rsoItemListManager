@@ -23,20 +23,19 @@ spec:
             - name: KUMULUZEE_DATASOURCES0_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: pg-pass
+                  name: pg-pass--rso-db-item-lists
                   key: KUMULUZEE_DATASOURCES0_PASSWORD
           ports:
             - containerPort: 8080
               name: server
               protocol: TCP
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: item-list-manager
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8080
       protocol: TCP
