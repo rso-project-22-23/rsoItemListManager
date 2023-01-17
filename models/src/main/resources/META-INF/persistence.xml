@@ -5,6 +5,8 @@
 
         <class>rso.itemscompare.itemlistmanager.models.entities.ItemListEntity</class>
         <class>rso.itemscompare.itemlistmanager.models.entities.ListEntryEntity</class>
+        <class>rso.itemscompare.itemlistmanager.models.entities.BasketEntryEntity</class>
+        <class>rso.itemscompare.itemlistmanager.models.entities.FavouritesEntryEntity</class>
         <class>rso.itemscompare.itemlistmanager.models.converters.InstantAttributeConverter</class>
 
         <properties>
