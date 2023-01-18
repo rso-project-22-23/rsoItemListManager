@@ -1,6 +1,7 @@
 package rso.itemscompare.itemlistmanager.api.v1.resources;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -51,7 +52,7 @@ public class ItemListManagerResource {
     @Operation(summary = "Gets item lists", description = "Retrieves item lists from DB.")
     @APIResponses({
             @APIResponse(description = "Item lists retrieved", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = List.class, type = SchemaType.OBJECT))),
     })
     public Response getItemList() {
         List<ItemList> itemLists = itemListBean.getItemListFilter(uriInfo);
@@ -80,7 +81,7 @@ public class ItemListManagerResource {
     @Operation(summary = "Get item list entries", description = "Retrieves all entries in specific item list")
     @APIResponses({
             @APIResponse(description = "Item list entries retrieved", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = List.class, type = SchemaType.OBJECT))),
             @APIResponse(description = "If item list is not found", responseCode = "404"),
     })
     public Response getItemListEntries(@PathParam("itemListId") Integer itemListId) {
@@ -101,7 +102,7 @@ public class ItemListManagerResource {
     @Operation(summary = "Get basket", description = "Retrieves all entries in basket for specific user")
     @APIResponses({
             @APIResponse(description = "Basket entries retrieved", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = List.class, type = SchemaType.INTEGER))),
             @APIResponse(description = "No basket entries for this user id are found", responseCode = "404"),
     })
     public Response getBasketForUser(@PathParam("userId") int userId) {
@@ -180,7 +181,7 @@ public class ItemListManagerResource {
     @Operation(summary = "Get favourites", description = "Retrieves all favourite items for specific user")
     @APIResponses({
             @APIResponse(description = "Favourites entries retrieved", responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = List.class))),
+                    content = @Content(schema = @Schema(implementation = List.class, type = SchemaType.INTEGER))),
             @APIResponse(description = "No favourites for this user id are found", responseCode = "404"),
     })
     public Response getFavouritesForUser(@PathParam("userId") int userId) {
