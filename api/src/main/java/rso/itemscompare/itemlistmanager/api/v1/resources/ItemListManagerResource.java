@@ -1,6 +1,10 @@
 package rso.itemscompare.itemlistmanager.api.v1.resources;
 
-import org.json.JSONObject;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import rso.itemscompare.itemlistmanager.lib.ItemList;
 import rso.itemscompare.itemlistmanager.lib.ListEntry;
 import rso.itemscompare.itemlistmanager.models.entities.BasketEntryEntity;
@@ -19,13 +23,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -51,6 +48,11 @@ public class ItemListManagerResource {
 
     @GET
     @Path("/itemlists")
+    @Operation(summary = "Gets item lists", description = "Retrieves item lists from DB.")
+    @APIResponses({
+            @APIResponse(description = "Item lists retrieved", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = List.class))),
+    })
     public Response getItemList() {
         List<ItemList> itemLists = itemListBean.getItemListFilter(uriInfo);
         return Response.status(Response.Status.OK).entity(itemLists).build();
@@ -58,6 +60,12 @@ public class ItemListManagerResource {
 
     @GET
     @Path("/itemlists/{itemListId}")
+    @Operation(summary = "Get item list", description = "Gets specific item list by its ID")
+    @APIResponses({
+            @APIResponse(description = "Item list retrieved", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = ItemList.class))),
+            @APIResponse(description = "If item list is not found", responseCode = "404"),
+    })
     public Response getItemList(@PathParam("itemListId") Integer itemListId) {
         ItemList itemList = itemListBean.getItemList(itemListId);
         if (itemList == null) {
@@ -69,6 +77,12 @@ public class ItemListManagerResource {
 
     @GET
     @Path("/itemlists/{itemListId}/entries")
+    @Operation(summary = "Get item list entries", description = "Retrieves all entries in specific item list")
+    @APIResponses({
+            @APIResponse(description = "Item list entries retrieved", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = List.class))),
+            @APIResponse(description = "If item list is not found", responseCode = "404"),
+    })
     public Response getItemListEntries(@PathParam("itemListId") Integer itemListId) {
         List<ListEntry> entries;
         try {
@@ -84,6 +98,12 @@ public class ItemListManagerResource {
     @Path("/basket/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get basket", description = "Retrieves all entries in basket for specific user")
+    @APIResponses({
+            @APIResponse(description = "Basket entries retrieved", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = List.class))),
+            @APIResponse(description = "No basket entries for this user id are found", responseCode = "404"),
+    })
     public Response getBasketForUser(@PathParam("userId") int userId) {
         List<BasketEntryEntity> l = basketEntryBean.getBasketEntriesForUser(userId);
         if (l.isEmpty()) {
@@ -102,6 +122,12 @@ public class ItemListManagerResource {
     @Path("/basket/delete")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Delete from basket", description = "Deletes specific entry for specific user from basket")
+    @APIResponses({
+            @APIResponse(description = "Basket entry successfully deleted", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = boolean.class))),
+            @APIResponse(description = "Specified basket entry does not exist", responseCode = "404"),
+    })
     public Response deleteFromBasket(@HeaderParam("userId") int userId, @HeaderParam("itemId") int itemId) {
         List<BasketEntryEntity> l = basketEntryBean.getBasketEntry(userId, itemId);
 
@@ -123,6 +149,12 @@ public class ItemListManagerResource {
     @Path("/basket/add")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Add to basket", description = "Adds specific item to basket for specific user")
+    @APIResponses({
+            @APIResponse(description = "Basket entry successfully added", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = boolean.class))),
+            @APIResponse(description = "This entry already exists", responseCode = "400"),
+    })
     public Response addToBasket(@HeaderParam("userId") int userId, @HeaderParam("itemId") int itemId) {
         List<BasketEntryEntity> l = basketEntryBean.getBasketEntry(userId, itemId);
         if (!l.isEmpty()) {
@@ -145,6 +177,12 @@ public class ItemListManagerResource {
     @Path("/favourites/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get favourites", description = "Retrieves all favourite items for specific user")
+    @APIResponses({
+            @APIResponse(description = "Favourites entries retrieved", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = List.class))),
+            @APIResponse(description = "No favourites for this user id are found", responseCode = "404"),
+    })
     public Response getFavouritesForUser(@PathParam("userId") int userId) {
         List<FavouritesEntryEntity> l = favouritesEntryBean.getFavouritesEntriesForUser(userId);
         if (l.isEmpty()) {
@@ -163,6 +201,12 @@ public class ItemListManagerResource {
     @Path("/favourites/delete")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Delete from favourites", description = "Deletes specific favourites entry for specific user")
+    @APIResponses({
+            @APIResponse(description = "Favourites entry successfully deleted", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = boolean.class))),
+            @APIResponse(description = "Specified favourites entry does not exist", responseCode = "404"),
+    })
     public Response deleteFromFavourites(@HeaderParam("userId") int userId, @HeaderParam("itemId") int itemId) {
         List<FavouritesEntryEntity> l = favouritesEntryBean.getFavouritesEntry(userId, itemId);
 
@@ -184,6 +228,12 @@ public class ItemListManagerResource {
     @Path("/favourites/add")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Add to favourites", description = "Adds specific item to favourites for specific user")
+    @APIResponses({
+            @APIResponse(description = "Favourites entry successfully added", responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = boolean.class))),
+            @APIResponse(description = "This entry already exists", responseCode = "400"),
+    })
     public Response addToFavourites(@HeaderParam("userId") int userId, @HeaderParam("itemId") int itemId) {
         List<FavouritesEntryEntity> l = favouritesEntryBean.getFavouritesEntry(userId, itemId);
         if (!l.isEmpty()) {
