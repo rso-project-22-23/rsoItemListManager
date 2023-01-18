@@ -164,7 +164,7 @@ public class ItemListManagerResource {
                     .build();
         }
 
-        int result = basketEntryBean.deleteBasketEntry(userId, itemId);
+        int result = basketEntryBean.addBasketEntry(userId, itemId);
         if (result != 1) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(buildErrorResponse("Error when adding entry to basket"))
@@ -243,7 +243,7 @@ public class ItemListManagerResource {
                     .build();
         }
 
-        int result = favouritesEntryBean.deleteFavouritesEntry(userId, itemId);
+        int result = favouritesEntryBean.addFavouritesEntry(userId, itemId);
         if (result != 1) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(buildErrorResponse("Error when adding entry to favourites"))
